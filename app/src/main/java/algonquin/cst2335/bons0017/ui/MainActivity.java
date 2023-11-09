@@ -1,7 +1,6 @@
 package algonquin.cst2335.bons0017.ui;
 
 
-
 import android.os.Bundle;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
