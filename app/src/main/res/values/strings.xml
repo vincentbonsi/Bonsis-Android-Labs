@@ -1,7 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Bonsi\'s Android Labs</string>
+
+    <string name="button1" translatable="false">Button 1 Text</string>
+    <string name="button2" translatable="false">Button 2 Text</string>
+    <string name="button3" translatable="false">Button 3 Text</string>
     <string name="hello_message">Hello World!</string>
     <string name="button_message">I\'m a button</string>
     <string name="myedittext">I\'m an EditText</string>
-    <string name="hint_text" translatable="false">Write something here</string>
+    <string name="spin_message">Your switch message here</string>
+    <string name="hint_text">Write something here</string>
+    <string name="app_name" translatable="false">Bonsi\'s Android Labs</string>
+
 </resources>
