@@ -1,74 +1,108 @@
 package algonquin.cst2335.bons0017.ui;
-
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import algonquin.cst2335.bons0017.R;
-import algonquin.cst2335.bons0017.ui.SecondActivity;
 
+/**
+ * This class represents the main activity of the application.
+ * It allows users to check the complexity of a password.
+ *
+ * @author bonsi nkamseh
+ * @version 1.0
+ */
 public class MainActivity extends AppCompatActivity {
 
-    private static String TAG = "MainActivity";
+    private TextView textView;
+    private EditText editText;
+    private Button button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Button loginButton = findViewById(R.id.loginButton);
-        EditText emailEditText = findViewById(R.id.edittextEmail);
+        textView = findViewById(R.id.textView);
+        editText = findViewById(R.id.myEditText);
+        button = findViewById(R.id.myButton);
 
-        SharedPreferences prefs = getSharedPreferences("MyData", Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = prefs.edit();
+        button.setOnClickListener(clk -> {
+            String password = editText.getText().toString();
+            boolean isComplex = checkPasswordComplexity(password);
 
-        String emailAddress = prefs.getString("LoginName", "");
-
-        emailEditText.setText(emailAddress);
-        loginButton.setOnClickListener( clk-> {
-            editor.putString("LoginName", emailEditText.getText().toString());
-            editor.apply();
-            Intent nextPage = new Intent( MainActivity.this, SecondActivity.class);
-            nextPage.putExtra( "EmailAddress", emailEditText.getText().toString() );
-            startActivity( nextPage);
-        } );
-
-        Log.w( TAG, "is the first function that gets created when an application is launched. There are several other functions that get called when an application is launching:" );
+            if (isComplex) {
+                textView.setText("Your password meets the requirements");
+            } else {
+                textView.setText("You shall not pass!");
+            }
+        });
     }
 
-    @Override
-    protected void onPause() {
-        super.onPause();
-        Log.w(TAG,"The application no longer responds to user input");
+    /**
+     * Checks if the input password meets complexity requirements.
+     *
+     * @param pw The string object that we are checking
+     * @return Returns true if the password meets complexity requirements, false otherwise
+     */
+    private boolean checkPasswordComplexity(String pw) {
+        boolean foundUpperCase, foundLowerCase, foundNumber, foundSpecial;
+        foundUpperCase = foundLowerCase = foundNumber = foundSpecial = false;
+
+        for (char c : pw.toCharArray()) {
+            if (Character.isUpperCase(c)) {
+                foundUpperCase = true;
+            } else if (Character.isLowerCase(c)) {
+                foundLowerCase = true;
+            } else if (Character.isDigit(c)) {
+                foundNumber = true;
+            } else if (isSpecialCharacter(c)) {
+                foundSpecial = true;
+            }
+        }
+
+        if (!foundUpperCase) {
+            Toast.makeText(this, "Password is missing an upper case letter", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!foundLowerCase) {
+            Toast.makeText(this, "Password is missing a lower case letter", Toast.LENGTH_SHORT).show();
+            return false;
+        } else if (!foundNumber) {
+            // Handle missing number case
+            return false;
+        } else if (!foundSpecial) {
+            // Handle missing special character case
+            return false;
+        } else {
+            return true;
+        }
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        Log.w(TAG,"The application is now responding to user input");
-    }
-
-    @Override
-    protected void onStart() {
-        super.onStart();
-        Log.w(TAG,"The application is now visible on screen");
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        Log.w(TAG,"The application is no longer visible");
-    }
-
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        Log.w(TAG,"Any memory used by the application is freed");
+    /**
+     * Checks if a character is a special character.
+     *
+     * @param c The character to check
+     * @return Returns true if c is one of: #$%^&*!@?, false otherwise
+     */
+    private boolean isSpecialCharacter(char c) {
+        switch (c) {
+            case '#':
+            case '$':
+            case '%':
+            case '^':
+            case '&':
+            case '*':
+            case '!':
+            case '@':
+            case '?':
+                return true;
+            default:
+                return false;
+        }
     }
 }

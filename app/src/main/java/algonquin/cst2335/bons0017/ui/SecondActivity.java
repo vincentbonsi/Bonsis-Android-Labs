@@ -90,7 +90,7 @@ public class SecondActivity extends AppCompatActivity {
 
     } // Missing closing curly brace for the onCreate method
 
-            
+
 
 
 } // Closing curly brace for the SecondActivity class
